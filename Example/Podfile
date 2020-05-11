@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'SCMediaBrowser_Example' do
+  pod 'SCMediaBrowser', :path => '../'
+
+  target 'SCMediaBrowser_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
