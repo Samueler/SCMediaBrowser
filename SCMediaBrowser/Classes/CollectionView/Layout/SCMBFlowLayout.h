@@ -1,5 +1,5 @@
 //
-//  SCVideoCell.h
+//  SCMBFlowLayout.h
 //  SCMediaBrowser
 //
 //  Created by 妈妈网 on 2020/5/11.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SCVideoCell : UICollectionViewCell
+@interface SCMBFlowLayout : UICollectionViewFlowLayout
 
 @end
 
