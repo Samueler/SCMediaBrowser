@@ -37,6 +37,9 @@ UICollectionViewDelegate
         [self.resources addObject:resource];
     }
     
+    SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"]];
+    [self.resources addObject:videoResource];
+    
     SCMBImageResource *gifResource = [[SCMBImageResource alloc] initWithURL:[NSURL URLWithString:@"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1708456121,4044353785&fm=26&gp=0.jpg"]];
     [self.resources addObject:gifResource];
     
@@ -97,15 +100,24 @@ UICollectionViewDelegate
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SCMBTestCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSCMBTestCellKey forIndexPath:indexPath];
-    SCMBImageResource *resource = (SCMBImageResource *)self.resources[indexPath.item];
-    if (resource.image) {
-        cell.contentImgView.image = [(SCMBImageResource *)self.resources[indexPath.item] image];
+    
+    SCMBResource *resource = self.resources[indexPath.item];
+    if ([resource isKindOfClass:[SCMBImageResource class]]) {
+        
+        SCMBImageResource *imageResource = (SCMBImageResource *)resource;
+        if (imageResource.image) {
+            cell.contentImgView.image = imageResource.image;
+        } else {
+            [cell.contentImgView sd_setImageWithURL:imageResource.URL];
+        }
     } else {
-        [cell.contentImgView sd_setImageWithURL:resource.URL];
+        [cell.contentImgView sd_setImageWithURL:[NSURL URLWithString:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589368632597&di=5bd8b849c54cb387e558dd8afb4ca8c2&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3D24e63ea01530e924cfa49c397c096e66%2F1aca061fbe096b63d5ca7df806338744e9f8acd7.jpg"]];
     }
+    
     if (![self.thumbnailImageViews containsObject:cell.contentImgView]) {
         [self.thumbnailImageViews addObject:cell.contentImgView];
     }
+    
     return cell;
 }
 

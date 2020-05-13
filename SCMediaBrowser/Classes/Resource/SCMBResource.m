@@ -7,9 +7,6 @@
 
 #import "SCMBResource.h"
 
-NSString *const kSCMBResourceDownloadProgressAction = @"kSCMBResourceDownloadProgressAction";
-NSString *const kSCMBResourcePropertyStringForDownloadProgress = @"downloadProgress";
-
 @implementation SCMBResource
 
 @end

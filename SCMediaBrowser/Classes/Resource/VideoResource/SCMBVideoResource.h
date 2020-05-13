@@ -6,17 +6,15 @@
 //
 
 #import "SCMBResource.h"
+#import "SCMBResourceData.h"
 
-@interface SCMBVideoResource : SCMBResource
+@interface SCMBVideoResource : SCMBResource <SCMBResourceData>
 
-@property (nonatomic, strong, readonly) NSURL *URL;
 @property (nonatomic, strong, readonly) NSURL *coverImageURL;
-@property (nonatomic, strong, readonly) UIImage *placeholder;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
-- (instancetype)initWithURL:(NSURL *)URL;
 - (instancetype)initWithURL:(NSURL *)URL coverImageURL:(NSURL *)coverImageURL;
 - (instancetype)initWithURL:(NSURL *)URL coverImageURL:(NSURL *)coverImageURL placeholder:(UIImage *)placeholder;
 

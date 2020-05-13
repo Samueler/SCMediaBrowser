@@ -9,6 +9,7 @@
 #import "SCMBEventProxy.h"
 #import "UIView+SCRouter.h"
 #import "SCMBCollectionView.h"
+#import "UIImage+BundleImage.h"
 
 NSString *const kSCMBPropertyStringForCurrentIndex = @"currentIndex";
 NSString *const kSCMBPropertyStringForCurrentResource = @"currentResource";
@@ -88,7 +89,8 @@ NSString *const kSCMBPropertyStringForCurrentResource = @"currentResource";
                 SCMBImageResource *imageResource = (SCMBImageResource *)resource;
                 resource.attachment.thumbnailSize = imageResource.placeholder.size;
             } else {
-                
+                SCMBVideoResource *videoResource = (SCMBVideoResource *)resource;
+                videoResource.attachment.thumbnailSize = videoResource.placeholder.size;
             }
             resource.attachment.originSize = resource.attachment.thumbnailSize;
         }

@@ -10,6 +10,9 @@
 
 @implementation SCMBVideoResource
 
+@synthesize URL = _URL;
+@synthesize placeholder = _placeholder;
+
 - (instancetype)initWithURL:(NSURL *)URL {
     return [self initWithURL:URL coverImageURL:nil];
 }
@@ -22,7 +25,7 @@
     if (self = [super init]) {
         self->_URL = URL;
         self->_coverImageURL = coverImageURL;
-        if (placeholder) {
+        if (!placeholder) {
             placeholder = [UIImage bundleImageNamed:@"placeholder"];
         }
         self->_placeholder = placeholder;

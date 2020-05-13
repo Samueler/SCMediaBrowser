@@ -11,7 +11,10 @@
 #import "UIResponder+SCRouter.h"
 
 NSString *const kSCMediaBrowserDismissAction = @"kSCMediaBrowserDismissAction";
-NSString *const kSCMBImageCellPanDragAlphaChanged = @"kSCMBImageCellPanDragAlphaChanged";
+NSString *const kSCMBResourceCellPanDragAlphaChanged = @"kSCMBResourceCellPanDragAlphaChanged";
+
+extern NSString *const kSCMBResourceDownloadProgressAction;
+extern NSString *const kSCMBResourcePropertyStringForDownloadProgress;
 
 @interface SCMBImageCell () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
@@ -72,8 +75,10 @@ NSString *const kSCMBImageCellPanDragAlphaChanged = @"kSCMBImageCellPanDragAlpha
 }
 
 - (void)setupDownloadProgressWithProgress:(float)progress {
-    [self.resource setValue:@(progress) forKey:kSCMBResourcePropertyStringForDownloadProgress];
-    [self routerEventForName:kSCMBResourceDownloadProgressAction paramater:self.resource];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.resource setValue:@(progress) forKey:kSCMBResourcePropertyStringForDownloadProgress];
+        [self routerEventForName:kSCMBResourceDownloadProgressAction paramater:self.resource];
+    });
 }
 
 - (void)hideAddedAttachments {
@@ -128,7 +133,7 @@ NSString *const kSCMBImageCellPanDragAlphaChanged = @"kSCMBImageCellPanDragAlpha
                 alpha = 0;
             }
             
-            [self routerEventForName:kSCMBImageCellPanDragAlphaChanged paramater:@(alpha)];
+            [self routerEventForName:kSCMBResourceCellPanDragAlphaChanged paramater:@(alpha)];
         } else {
             if (CGPointEqualToPoint(self.startDragPoint, CGPointZero) || self.imageScrollView.isZooming || !self.resource.attachment.panGestureEnable) {
                 return;
@@ -176,7 +181,7 @@ NSString *const kSCMBImageCellPanDragAlphaChanged = @"kSCMBImageCellPanDragAlpha
             } else {
                 [self hideAddedAttachments];
                 [UIView animateWithDuration:0.25 animations:^{
-                    [self routerEventForName:kSCMBImageCellPanDragAlphaChanged paramater:@(1)];
+                    [self routerEventForName:kSCMBResourceCellPanDragAlphaChanged paramater:@(1)];
                     CGPoint anchorPoint = self.imageScrollView.layer.anchorPoint;
                     self.imageScrollView.center = CGPointMake(self.frame.size.width * anchorPoint.x, self.frame.size.height * anchorPoint.y);
                     self.imageScrollView.transform = CGAffineTransformIdentity;
@@ -187,7 +192,7 @@ NSString *const kSCMBImageCellPanDragAlphaChanged = @"kSCMBImageCellPanDragAlpha
                     self.imageScrollView.userInteractionEnabled = YES;
                     self.imageScrollView.scrollEnabled = YES;
                     
-                    [self routerEventForName:kSCMBImageCellPanDragAlphaChanged paramater:@(1)];
+                    [self routerEventForName:kSCMBResourceCellPanDragAlphaChanged paramater:@(1)];
                     
                     self.startDrag = NO;
                 }];

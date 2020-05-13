@@ -6,10 +6,14 @@
 //
 
 #import "SCMBEventProxy.h"
+#import "SCMBImageResource.h"
+#import "SCMBVideoResource.h"
+
 extern NSString *const kSCMediaBrowserDismissAction;
-extern NSString *const kSCMBImageCellPanDragAlphaChanged;
+extern NSString *const kSCMBResourceCellPanDragAlphaChanged;
 extern NSString *const kSCMBDisplayingIndexChangedAction;
 extern NSString *const kSCMBPropertyStringForCurrentIndex;
+extern NSString *const kSCMBResourceDownloadProgressAction;
 extern NSString *const kSCMBPropertyStringForCurrentResource;
 
 @interface SCMBEventProxy ()
@@ -55,7 +59,11 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
 
 - (void)resourceDownloadProgress:(SCMBResource *)resource {
     if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:resource:downloadProgress:)]) {
-        [self.browser.delegate mediaBrowser:self.browser resource:resource downloadProgress:resource.downloadProgress];
+        if ([resource isKindOfClass:[SCMBImageResource class]]) {
+            [self.browser.delegate mediaBrowser:self.browser resource:resource downloadProgress:[(SCMBImageResource *)resource downloadProgress]];
+        } else {
+            
+        }
     }
 }
 
@@ -77,7 +85,7 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
             kSCMediaBrowserDismissAction:
                 [self createInvocationForSelector:@selector(mediaBrowserImageCellOnceTapGestureActionWithResource:)],
             
-            kSCMBImageCellPanDragAlphaChanged:
+            kSCMBResourceCellPanDragAlphaChanged:
                 [self createInvocationForSelector:@selector(mediaBrowserImageCellPanDragAlphaChanged:)],
             
             kSCMBResourceDownloadProgressAction:

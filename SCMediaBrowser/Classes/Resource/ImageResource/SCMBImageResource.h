@@ -6,17 +6,16 @@
 //
 
 #import "SCMBResource.h"
+#import "SCMBResourceData.h"
 
-@interface SCMBImageResource : SCMBResource
+@interface SCMBImageResource : SCMBResource <SCMBResourceData>
 
-@property (nonatomic, strong, readonly) NSURL *URL;
 @property (nonatomic, strong, readonly) UIImage *image;
-@property (nonatomic, strong, readonly) UIImage *placeholder;
+@property (nonatomic, assign, readonly) float downloadProgress;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
-- (instancetype)initWithURL:(NSURL *)URL;
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)URL placeholder:(UIImage *)placeholder;
 

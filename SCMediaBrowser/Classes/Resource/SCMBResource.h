@@ -8,12 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "SCMBResourceAttachment.h"
 
-extern NSString *const kSCMBResourceDownloadProgressAction;
-extern NSString *const kSCMBResourcePropertyStringForDownloadProgress;
-
 @interface SCMBResource : NSObject
-
-@property (nonatomic, assign, readonly) float downloadProgress;
 
 @property (nonatomic, strong) SCMBResourceAttachment *attachment;
 

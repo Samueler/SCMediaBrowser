@@ -8,7 +8,13 @@
 #import "SCMBImageResource.h"
 #import "UIImage+BundleImage.h"
 
+NSString *const kSCMBResourceDownloadProgressAction = @"kSCMBResourceDownloadProgressAction";
+NSString *const kSCMBResourcePropertyStringForDownloadProgress = @"downloadProgress";
+
 @implementation SCMBImageResource
+
+@synthesize URL = _URL;
+@synthesize placeholder = _placeholder;
 
 - (instancetype)initWithURL:(NSURL *)URL {
     return [self initWithURL:URL placeholder:nil];
