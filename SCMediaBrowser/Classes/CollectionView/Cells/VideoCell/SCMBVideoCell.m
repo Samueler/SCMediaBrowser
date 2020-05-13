@@ -6,7 +6,6 @@
 //
 
 #import "SCMBVideoCell.h"
-#import "SCMBAVPlayer.h"
 #import "SDWebImage.h"
 #import "UIResponder+SCRouter.h"
 
@@ -200,7 +199,6 @@ UIGestureRecognizerDelegate
     
     [self.videoContainView.layer addSublayer:self.avPlayer.playerLayer];
     self.avPlayer.playerLayer.frame = self.videoContainView.bounds;
-    [self.avPlayer play];
 }
 
 #pragma mark - Lazy Load

@@ -22,6 +22,7 @@ NSString *const kSCMBDisplayingIndexChangedAction = @"kSCMBDisplayingIndexChange
 
 @property (nonatomic, strong) SCMBFlowLayout *layout;
 @property (nonatomic, assign) NSInteger displayingIndex;
+@property (nonatomic, strong) SCMBAVPlayer *avPlayer;
 
 @end
 
@@ -75,29 +76,28 @@ NSString *const kSCMBDisplayingIndexChangedAction = @"kSCMBDisplayingIndexChange
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SCMBResource *resource = self.resources[indexPath.item];
     
+    [self.avPlayer pause];
+    
     if ([resource isKindOfClass:[SCMBImageResource class]]) {
         SCMBImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SCMBImageCellReuseIdentifier forIndexPath:indexPath];
         
         if (self.scmbDelegate && [self.scmbDelegate respondsToSelector:@selector(collectionView:containerView:contentView:cellForItemAtIndex:)]) {
             [self.scmbDelegate collectionView:self containerView:cell contentView:cell.imageContentView cellForItemAtIndex:indexPath.item];
         }
+        
+        cell.resource = (SCMBImageResource *)resource;
+        
         return cell;
     }
     
     SCMBVideoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SCMBVideoCellReuseIdentifier forIndexPath:indexPath];
     
+    cell.resource = (SCMBVideoResource *)resource;
+    
+    self.avPlayer = cell.avPlayer;
+    [self.avPlayer play];
+    
     return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    SCMBResource *resource = self.resources[indexPath.item];
-    if ([resource isKindOfClass:[SCMBImageCell class]]) {
-        SCMBImageCell *imageCell = (SCMBImageCell *)cell;
-        imageCell.resource = (SCMBImageResource *)resource;
-    } else {
-        SCMBVideoCell *videoCell = (SCMBVideoCell *)cell;
-        videoCell.resource = (SCMBVideoResource *)resource;
-    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
