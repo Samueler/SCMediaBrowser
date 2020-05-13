@@ -38,6 +38,7 @@ UICollectionViewDelegate
     }
     
     SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"]];
+    videoResource.attachment.originSize = CGSizeMake(854, 480);
     [self.resources addObject:videoResource];
     
     SCMBImageResource *gifResource = [[SCMBImageResource alloc] initWithURL:[NSURL URLWithString:@"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1708456121,4044353785&fm=26&gp=0.jpg"]];
