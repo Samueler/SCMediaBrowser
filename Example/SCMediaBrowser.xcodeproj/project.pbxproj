@@ -332,12 +332,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SCMediaBrowser_Example/Pods-SCMediaBrowser_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SCMediaBox/SCMediaBox.framework",
 				"${BUILT_PRODUCTS_DIR}/SCMediaBrowser/SCMediaBrowser.framework",
 				"${BUILT_PRODUCTS_DIR}/SCResponderChainPass/SCResponderChainPass.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCMediaBox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCMediaBrowser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCResponderChainPass.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
