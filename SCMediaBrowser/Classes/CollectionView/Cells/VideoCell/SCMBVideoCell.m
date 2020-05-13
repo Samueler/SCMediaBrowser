@@ -98,9 +98,11 @@ UIGestureRecognizerDelegate
             
             self.startDragPoint = touchPoint;
             CGRect startF = self.videoContainView.frame;
-            CGFloat anchorX = touchPoint.x / startF.size.width;
-            CGFloat anchorY = touchPoint.y / startF.size.height;
+            CGFloat anchorX = (touchPoint.x - startF.origin.x) / startF.size.width;
+            CGFloat anchorY = (touchPoint.y - startF.origin.y) / startF.size.height;
             self.videoContainView.layer.anchorPoint = CGPointMake(anchorX, anchorY);
+            self.videoContainView.userInteractionEnabled = NO;
+            self.videoContainView.center = touchPoint;
             
             [self hideAddedAttachments];
             
@@ -176,11 +178,19 @@ UIGestureRecognizerDelegate
 - (void)setResource:(SCMBVideoResource *)resource {
     _resource = resource;
     
+    for (UIView *subview in self.subviews) {
+        if ([subview isEqual:self.contentView] || [subview isEqual:self.videoContainView]) {
+            subview.hidden = NO;
+        } else {
+            subview.hidden = !self.resource.attachment.addedAttachmentView;
+        }
+    }
+    
     self.resource.attachment.originContentView = self.videoContainView;
     
     [self.coverImageView sd_setImageWithURL:resource.coverImageURL placeholderImage:resource.placeholder];
     
-    CGFloat height = self.frame.size.width * resource.attachment.originSize.height / resource.attachment.originSize.height;
+    CGFloat height = self.frame.size.width * resource.attachment.originSize.height / resource.attachment.originSize.width;
     height = height > self.frame.size.height ? self.frame.size.height : height;
     
     self.videoContainView.frame = CGRectMake(0, (self.frame.size.height - height) * 0.5, self.frame.size.width, height);

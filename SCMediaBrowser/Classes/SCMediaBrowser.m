@@ -76,10 +76,6 @@ NSString *const kSCMBPropertyStringForCurrentResource = @"currentResource";
             UIImageView *thumbnailImgView = [self.dataSource mediaBrowser:self thumbnailViewAtIndex:idx];
             if (thumbnailImgView) {
                 resource.attachment.thumbnailSize = thumbnailImgView.image.size;
-                if (CGSizeEqualToSize(resource.attachment.originSize, CGSizeZero)) {
-                    resource.attachment.originSize = resource.attachment.thumbnailSize;
-                }
-                
                 resource.attachment.thumbnailContentView = thumbnailImgView;
             }
         }
@@ -92,6 +88,9 @@ NSString *const kSCMBPropertyStringForCurrentResource = @"currentResource";
                 SCMBVideoResource *videoResource = (SCMBVideoResource *)resource;
                 videoResource.attachment.thumbnailSize = videoResource.placeholder.size;
             }
+        }
+        
+        if (CGSizeEqualToSize(resource.attachment.originSize, CGSizeZero)) {
             resource.attachment.originSize = resource.attachment.thumbnailSize;
         }
     }

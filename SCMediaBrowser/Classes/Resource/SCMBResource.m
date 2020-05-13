@@ -9,4 +9,11 @@
 
 @implementation SCMBResource
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _attachment = [[SCMBResourceAttachment alloc] init];
+    }
+    return self;
+}
+
 @end
