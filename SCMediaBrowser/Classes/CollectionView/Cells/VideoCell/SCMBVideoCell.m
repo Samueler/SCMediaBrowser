@@ -54,6 +54,13 @@ UIGestureRecognizerDelegate
     }
 }
 
+- (void)setupVideoContainerOriginRect {
+    CGFloat height = self.frame.size.width * self.resource.attachment.originSize.height / self.resource.attachment.originSize.width;
+    height = height > self.frame.size.height ? self.frame.size.height : height;
+    
+    self.videoContainView.frame = CGRectMake(0, (self.frame.size.height - height) * 0.5, self.frame.size.width, height);
+}
+
 #pragma mark - Events
 
 - (void)panGestureAction:(UIPanGestureRecognizer *)panGesture {
@@ -122,15 +129,13 @@ UIGestureRecognizerDelegate
                 [self routerEventForName:kSCMediaBrowserDismissAction paramater:self.resource];
             } else {
                 [self hideAddedAttachments];
+
+                self.videoContainView.transform = CGAffineTransformIdentity;
                 [UIView animateWithDuration:0.25 animations:^{
                     [self routerEventForName:kSCMBResourceCellPanDragAlphaChanged paramater:@(1)];
-                    CGPoint anchorPoint = self.videoContainView.layer.anchorPoint;
-                    self.videoContainView.center = CGPointMake(self.frame.size.width * anchorPoint.x, self.frame.size.height * anchorPoint.y);
-                    self.videoContainView.transform = CGAffineTransformIdentity;
+                    [self setupVideoContainerOriginRect];
                     self.startDragPoint = CGPointZero;
                 } completion:^(BOOL finished) {
-                    self.videoContainView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-                    self.videoContainView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5);
                     self.videoContainView.userInteractionEnabled = YES;
                     
                     [self routerEventForName:kSCMBResourceCellPanDragAlphaChanged paramater:@(1)];
@@ -190,10 +195,7 @@ UIGestureRecognizerDelegate
     
     [self.coverImageView sd_setImageWithURL:resource.coverImageURL placeholderImage:resource.placeholder];
     
-    CGFloat height = self.frame.size.width * resource.attachment.originSize.height / resource.attachment.originSize.width;
-    height = height > self.frame.size.height ? self.frame.size.height : height;
-    
-    self.videoContainView.frame = CGRectMake(0, (self.frame.size.height - height) * 0.5, self.frame.size.width, height);
+    [self setupVideoContainerOriginRect];
     self.coverImageView.frame = self.coverImageView.bounds;
     
     [self.videoContainView.layer addSublayer:self.avPlayer.playerLayer];

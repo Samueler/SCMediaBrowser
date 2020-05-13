@@ -39,8 +39,10 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
     
     [UIView animateWithDuration:0.3 animations:^{
         self.browser.backgroundColor = [self.browser.backgroundColor colorWithAlphaComponent:0];
-        resource.attachment.originContentView.superview.transform = CGAffineTransformIdentity;
-        resource.attachment.originContentView.superview.frame = self.browser.bounds;
+        if ([resource isKindOfClass:[SCMBImageResource class]]) {
+            resource.attachment.originContentView.superview.transform = CGAffineTransformIdentity;
+            resource.attachment.originContentView.superview.frame = self.browser.bounds;
+        }
         resource.attachment.originContentView.transform = resource.attachment.thumbnailContentView.transform;
         resource.attachment.originContentView.contentMode = resource.attachment.thumbnailContentView.contentMode;
         resource.attachment.originContentView.clipsToBounds = resource.attachment.thumbnailContentView.clipsToBounds;
