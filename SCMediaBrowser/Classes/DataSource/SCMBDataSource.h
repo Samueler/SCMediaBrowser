@@ -2,15 +2,23 @@
 //  SCMBDataSource.h
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@class SCMediaBrowser, SCMBResource;
 
 @protocol SCMBDataSource <NSObject>
 
-@end
+- (NSInteger)numberOfResourcesInMediaBrowser:(SCMediaBrowser *)mediaBrowser;
 
-NS_ASSUME_NONNULL_END
+- (SCMBResource *)mediaBrowser:(SCMediaBrowser *)mediaBrowser resourceAtIndex:(NSInteger)index;
+
+@optional
+
+- (BOOL)mediaBrowser:(SCMediaBrowser *)mediaBrowser containerView:(UIView *)containerView contentView:(UIView *)contentView customAttachmentsForIndex:(NSInteger)index;
+
+- (UIImageView *)mediaBrowser:(SCMediaBrowser *)mediaBrowser thumbnailViewAtIndex:(NSInteger)index;
+
+@end

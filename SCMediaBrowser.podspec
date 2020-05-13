@@ -8,4 +8,11 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/Samueler/SCMediaBrowser.git', :tag => s.version.to_s }
   s.ios.deployment_target = '9.0'
   s.source_files = 'SCMediaBrowser/Classes/**/*'
+  s.resource_bundle = {
+    'SCMediaBrowser' => 'SCMediaBrowser/Assets/SCMediaBrowser.bundle'
+  }
+  
+  s.dependency 'SDWebImage', '~> 5.0'
+  s.dependency 'SCResponderChainPass', '~> 1.1.0'
+  s.dependency 'SCMBAVPlayer'
 end

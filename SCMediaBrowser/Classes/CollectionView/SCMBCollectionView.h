@@ -2,15 +2,23 @@
 //  SCMBCollectionView.h
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import <UIKit/UIKit.h>
+#import "SCMBResource.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class SCMBCollectionView, SCMBImageScrollView, SDAnimatedImageView;
 
-@interface SCMBCollectionView : UICollectionView
+@protocol SCMBCollectionViewDelegate <NSObject>
+
+- (void)collectionView:(SCMBCollectionView *)collectionView containerView:(UIView *)containerView contentView:(UIView *)contentView cellForItemAtIndex:(NSInteger)index;
 
 @end
 
-NS_ASSUME_NONNULL_END
+@interface SCMBCollectionView : UICollectionView
+
+@property (nonatomic, strong) NSArray<SCMBResource *> *resources;
+@property (nonatomic, weak) id<SCMBCollectionViewDelegate> scmbDelegate;
+
+@end

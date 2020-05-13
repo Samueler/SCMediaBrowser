@@ -2,15 +2,19 @@
 //  SCMBResource.h
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import <Foundation/Foundation.h>
+#import "SCMBResourceAttachment.h"
 
-NS_ASSUME_NONNULL_BEGIN
+extern NSString *const kSCMBResourceDownloadProgressAction;
+extern NSString *const kSCMBResourcePropertyStringForDownloadProgress;
 
 @interface SCMBResource : NSObject
 
-@end
+@property (nonatomic, assign, readonly) float downloadProgress;
 
-NS_ASSUME_NONNULL_END
+@property (nonatomic, strong) SCMBResourceAttachment *attachment;
+
+@end

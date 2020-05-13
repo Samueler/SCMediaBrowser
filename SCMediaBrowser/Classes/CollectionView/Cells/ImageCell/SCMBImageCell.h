@@ -2,15 +2,15 @@
 //  SCMBImageCell.h
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import <UIKit/UIKit.h>
-
-NS_ASSUME_NONNULL_BEGIN
+#import "SCMBImageResource.h"
 
 @interface SCMBImageCell : UICollectionViewCell
 
-@end
+@property (nonatomic, strong, readonly) UIView *imageContentView;
+@property (nonatomic, strong) SCMBImageResource *resource;
 
-NS_ASSUME_NONNULL_END
+@end

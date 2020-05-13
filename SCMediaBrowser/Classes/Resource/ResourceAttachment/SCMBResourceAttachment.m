@@ -2,10 +2,12 @@
 //  SCMBResourceAttachment.m
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import "SCMBResourceAttachment.h"
+
+NSString *const kSCMBAttachmentViewIdentifier = @"kSCMBAttachmentViewIdentifier";
 
 @implementation SCMBResourceAttachment
 

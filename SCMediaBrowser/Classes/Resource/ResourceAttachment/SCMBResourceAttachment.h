@@ -2,15 +2,20 @@
 //  SCMBResourceAttachment.h
 //  SCMediaBrowser
 //
-//  Created by 妈妈网 on 2020/5/11.
+//  Created by ty.Chen on 2020/5/11.
 //
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+extern NSString *const kSCMBAttachmentViewIdentifier;
 
 @interface SCMBResourceAttachment : NSObject
 
-@end
+@property (nonatomic, assign) CGSize originSize;
+@property (nonatomic, strong) UIView *originContentView;
+@property (nonatomic, assign) CGSize thumbnailSize;
+@property (nonatomic, strong) UIView *thumbnailContentView;
+@property (nonatomic, assign) BOOL panGestureEnable;
+@property (nonatomic, assign) BOOL addedAttachmentView;
 
-NS_ASSUME_NONNULL_END
+@end
