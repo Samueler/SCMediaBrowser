@@ -130,4 +130,8 @@ NSString *const kSCMBDisplayingIndexChangedAction = @"kSCMBDisplayingIndexChange
     return _layout;
 }
 
+- (void)dealloc {
+    [self.avPlayer pause];
+}
+
 @end
