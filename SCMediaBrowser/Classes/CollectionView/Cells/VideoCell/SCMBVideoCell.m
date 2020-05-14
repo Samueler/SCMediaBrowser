@@ -12,13 +12,16 @@
 extern NSString *const kSCMediaBrowserDismissAction;
 extern NSString *const kSCMBResourceCellPanDragAlphaChanged;
 
+NSString *const kSCMediaBrowserVideoStatusChanged = @"kSCMediaBrowserVideoStatusChanged";
+NSString *const kSCMediaBrowserVideoDurationChanged = @"kSCMediaBrowserVideoDurationChanged";
+NSString *const kSCMediaBrowserVideoBufferDurationChanged = @"kSCMediaBrowserVideoBufferDurationChanged";
+
 @interface SCMBVideoCell () <
-SCMBAVDataSource,
-SCMBAVDelegate,
+SCAVSinglePlayerDelegate,
 UIGestureRecognizerDelegate
 >
 
-@property (nonatomic, strong) SCMBAVPlayer *avPlayer;
+@property (nonatomic, strong) SCAVSinglePlayer *avPlayer;
 @property (nonatomic, strong) UIView *videoContainView;
 @property (nonatomic, strong) UIImageView *coverImageView;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
@@ -146,29 +149,30 @@ UIGestureRecognizerDelegate
     }
 }
 
-#pragma mark - SCMBAVDataSource
+#pragma mark - SCAVSinglePlayerDelegate
 
-- (NSInteger)numberOfURLInPlayer:(SCMBAVPlayer *)player {
-    return 1;
-}
-
-- (NSURL *)AVPlayer:(SCMBAVPlayer *)player URLForItemAtIndex:(NSInteger)index {
-    return self.resource.URL;
-}
-
-#pragma mark - SCMBAVDelegate
-
-- (void)AVPlayer:(SCMBAVPlayer *)player bufferedDuration:(NSTimeInterval)bufferedDuration index:(NSInteger)index {
-    
-}
-
-- (void)AVPlayer:(SCMBAVPlayer *)player currentDuration:(NSTimeInterval)currentDuration totalDuration:(NSTimeInterval)totalDuration index:(NSInteger)index {
-}
-
-- (void)AVPlayer:(SCMBAVPlayer *)player stateChanged:(SCMBAVPlayerState)state {
-    if (state == SCMBAVPlayerStatePlaying) {
+- (void)singlePlayer:(SCAVSinglePlayer *)singlePlayer currentStatusChanged:(SCAVPlayerStatus)status {
+    if (status == SCAVPlayerStatusPlaying) {
         self.coverImageView.hidden = YES;
     }
+    
+    [self routerEventForName:kSCMediaBrowserVideoStatusChanged paramater:@(status)];
+}
+
+- (void)singlePlayer:(SCAVSinglePlayer *)singlePlayer bufferedDuration:(NSTimeInterval)bufferedDuration {
+    [self routerEventForName:kSCMediaBrowserVideoBufferDurationChanged paramater:@(bufferedDuration)];
+}
+
+- (void)singlePlayer:(SCAVSinglePlayer *)singlePlayer currentDuration:(NSTimeInterval)currentDuration totalDuration:(NSTimeInterval)totalDuration {
+    [self routerEventForName:kSCMediaBrowserVideoDurationChanged paramaters:@[@(currentDuration), @(totalDuration)]];
+}
+
+- (void)singlePlayerWillEnterForeground:(SCAVSinglePlayer *)singlePlayer {
+    [self.avPlayer play];
+}
+
+- (void)singlePlayerDidEnterBackground:(SCAVSinglePlayer *)singlePlayer {
+    [self.avPlayer pause];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -191,24 +195,19 @@ UIGestureRecognizerDelegate
     }
     
     self.resource.attachment.originContentView = self.videoContainView;
-    
     [self.coverImageView sd_setImageWithURL:resource.coverImageURL placeholderImage:resource.placeholder];
     
     [self setupVideoContainerOriginRect];
     self.coverImageView.frame = self.coverImageView.bounds;
     
+    [self.avPlayer.playerLayer removeFromSuperlayer];
+    self.avPlayer = [[SCAVSinglePlayer alloc] initWithURL:resource.URL loopCount:resource.loopCount];
+    self.avPlayer.delegate = self;
     [self.videoContainView.layer addSublayer:self.avPlayer.playerLayer];
     self.avPlayer.playerLayer.frame = self.videoContainView.bounds;
 }
 
 #pragma mark - Lazy Load
-
-- (SCMBAVPlayer *)avPlayer {
-    if (!_avPlayer) {
-        _avPlayer = [[SCMBAVPlayer alloc] initWithDataSource:self delegate:self];
-    }
-    return _avPlayer;
-}
 
 - (UIView *)videoContainView {
     if (!_videoContainView) {

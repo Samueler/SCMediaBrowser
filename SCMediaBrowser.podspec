@@ -14,5 +14,6 @@ Pod::Spec.new do |s|
   
   s.dependency 'SDWebImage', '~> 5.0'
   s.dependency 'SCResponderChainPass', '~> 1.1.0'
-  s.dependency 'SCMBAVPlayer'
+  s.dependency 'SCAVPlayer', '1.0.1'
+  
 end

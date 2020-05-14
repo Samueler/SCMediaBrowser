@@ -10,11 +10,14 @@
 #import "SCMBVideoResource.h"
 
 extern NSString *const kSCMediaBrowserDismissAction;
-extern NSString *const kSCMBResourceCellPanDragAlphaChanged;
 extern NSString *const kSCMBDisplayingIndexChangedAction;
+extern NSString *const kSCMediaBrowserVideoStatusChanged;
 extern NSString *const kSCMBPropertyStringForCurrentIndex;
+extern NSString *const kSCMediaBrowserVideoDurationChanged;
 extern NSString *const kSCMBResourceDownloadProgressAction;
+extern NSString *const kSCMBResourceCellPanDragAlphaChanged;
 extern NSString *const kSCMBPropertyStringForCurrentResource;
+extern NSString *const kSCMediaBrowserVideoBufferDurationChanged;
 
 @interface SCMBEventProxy ()
 
@@ -61,11 +64,7 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
 
 - (void)resourceDownloadProgress:(SCMBResource *)resource {
     if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:resource:downloadProgress:)]) {
-        if ([resource isKindOfClass:[SCMBImageResource class]]) {
-            [self.browser.delegate mediaBrowser:self.browser resource:resource downloadProgress:[(SCMBImageResource *)resource downloadProgress]];
-        } else {
-            
-        }
+        [self.browser.delegate mediaBrowser:self.browser resource:resource downloadProgress:[(SCMBImageResource *)resource downloadProgress]];
     }
 }
 
@@ -76,6 +75,24 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
     
     if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:displayingResource:forItemAtIndex:)]) {
         [self.browser.delegate mediaBrowser:self.browser displayingResource:resource forItemAtIndex:index];
+    }
+}
+
+- (void)videoResourceBufferDurationChanged:(NSTimeInterval)bufferedDuration {
+    if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:bufferedDuration:index:)]) {
+        [self.browser.delegate mediaBrowser:self.browser bufferedDuration:bufferedDuration index:self.browser.currentIndex];
+    }
+}
+
+- (void)videoResourceCurrentDuration:(NSTimeInterval)currentDuration totalDuration:(NSTimeInterval)totalDuration {
+    if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:currentDuration:totalDuration:)]) {
+        [self.browser.delegate mediaBrowser:self.browser currentDuration:currentDuration totalDuration:totalDuration index:self.browser.currentIndex];
+    }
+}
+
+- (void)videoResourceCurrentItemStatusChanged:(SCAVPlayerStatus)status {
+    if (self.browser.delegate && [self.browser.delegate respondsToSelector:@selector(mediaBrowser:currentStatusChanged:)]) {
+        [self.browser.delegate mediaBrowser:self.browser currentStatusChanged:status index:self.browser.currentIndex];
     }
 }
 
@@ -94,7 +111,16 @@ extern NSString *const kSCMBPropertyStringForCurrentResource;
                 [self createInvocationForSelector:@selector(resourceDownloadProgress:)],
             
             kSCMBDisplayingIndexChangedAction:
-                [self createInvocationForSelector:@selector(collectionView:displayingResource:index:)]
+                [self createInvocationForSelector:@selector(collectionView:displayingResource:index:)],
+            
+            kSCMediaBrowserVideoBufferDurationChanged:
+                [self createInvocationForSelector:@selector(videoResourceBufferDurationChanged:)],
+            
+            kSCMediaBrowserVideoDurationChanged:
+                [self createInvocationForSelector:@selector(videoResourceCurrentDuration:totalDuration:)],
+            
+            kSCMediaBrowserVideoStatusChanged:
+                [self createInvocationForSelector:@selector(videoResourceCurrentItemStatusChanged:)]
         };
     }
     return _browserEventStrategy;;

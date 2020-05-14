@@ -37,12 +37,16 @@ UICollectionViewDelegate
         [self.resources addObject:resource];
     }
     
-    SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"]];
+    SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"] loopCount:2];
     videoResource.attachment.originSize = CGSizeMake(854, 480);
     [self.resources addObject:videoResource];
     
     SCMBImageResource *gifResource = [[SCMBImageResource alloc] initWithURL:[NSURL URLWithString:@"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1708456121,4044353785&fm=26&gp=0.jpg"]];
     [self.resources addObject:gifResource];
+    
+    SCMBVideoResource *videoResource1 = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff00000bdkpfpdd2r6fb5kf6m50&line=0.mp4"] loopCount:0];
+    videoResource1.attachment.originSize = CGSizeMake(540, 960);
+    [self.resources addObject:videoResource1];
     
     [self.view addSubview:self.collectionView];
 }
@@ -84,13 +88,36 @@ UICollectionViewDelegate
         
         [containerView addSubview:greenView];
         return YES;
-    } else {
-        return NO;
+    } else if (index == 4) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 200, 44)];
+        label.text = [NSString stringWithFormat:@"视频上的label：%zd", index];
+        label.backgroundColor = [UIColor orangeColor];
+        [containerView addSubview:label];
+        return YES;
+    } else if (index == 6) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 200, 44)];
+        label.text = [NSString stringWithFormat:@"视频上的label：%zd", index];
+        label.backgroundColor = [UIColor orangeColor];
+        [containerView addSubview:label];
+        return YES;
     }
+    return NO;
 }
 
 - (void)btnClick {
     NSLog(@"---btnClick---");
+}
+
+- (void)mediaBrowser:(SCMediaBrowser *)mediaBrowser currentStatusChanged:(SCAVPlayerStatus)status index:(NSInteger)index {
+    NSLog(@"status: %lu", (unsigned long)status);
+}
+
+- (void)mediaBrowser:(SCMediaBrowser *)mediaBrowser currentDuration:(NSTimeInterval)currentDuration totalDuration:(NSTimeInterval)totalDuration index:(NSInteger)index {
+    NSLog(@"currentDuration:%f, totalDuration:%f", currentDuration, totalDuration);
+}
+
+- (void)mediaBrowser:(SCMediaBrowser *)mediaBrowser bufferedDuration:(NSTimeInterval)bufferedDuration index:(NSInteger)index {
+    NSLog(@"bufferedDuration: %f", bufferedDuration);
 }
 
 #pragma mark - UICollectionViewDataSource, UICollectionViewDelegate

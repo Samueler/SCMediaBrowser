@@ -22,7 +22,7 @@ NSString *const kSCMBDisplayingIndexChangedAction = @"kSCMBDisplayingIndexChange
 
 @property (nonatomic, strong) SCMBFlowLayout *layout;
 @property (nonatomic, assign) NSInteger displayingIndex;
-@property (nonatomic, strong) SCMBAVPlayer *avPlayer;
+@property (nonatomic, strong) SCAVSinglePlayer *avPlayer;
 
 @end
 
@@ -91,6 +91,10 @@ NSString *const kSCMBDisplayingIndexChangedAction = @"kSCMBDisplayingIndexChange
     }
     
     SCMBVideoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SCMBVideoCellReuseIdentifier forIndexPath:indexPath];
+    
+    if (self.scmbDelegate && [self.scmbDelegate respondsToSelector:@selector(collectionView:containerView:contentView:cellForItemAtIndex:)]) {
+        [self.scmbDelegate collectionView:self containerView:cell contentView:cell.videoContainView cellForItemAtIndex:indexPath.item];
+    }
     
     cell.resource = (SCMBVideoResource *)resource;
     

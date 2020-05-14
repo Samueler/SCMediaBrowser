@@ -6,12 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCMBAVPlayer.h"
+#import "SCAVSinglePlayer.h"
 #import "SCMBVideoResource.h"
 
 @interface SCMBVideoCell : UICollectionViewCell
 
-@property (nonatomic, strong, readonly) SCMBAVPlayer *avPlayer;
+@property (nonatomic, strong, readonly) SCAVSinglePlayer *avPlayer;
 @property (nonatomic, strong, readonly) UIView *videoContainView;
 
 @property (nonatomic, strong) SCMBVideoResource *resource;
