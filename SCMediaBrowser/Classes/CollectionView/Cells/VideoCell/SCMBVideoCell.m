@@ -164,6 +164,7 @@ UIGestureRecognizerDelegate
 }
 
 - (void)singlePlayer:(SCAVSinglePlayer *)singlePlayer currentDuration:(NSTimeInterval)currentDuration totalDuration:(NSTimeInterval)totalDuration {
+    [self.resource setValue:@(currentDuration) forKey:@"resumeDuration"];
     [self routerEventForName:kSCMediaBrowserVideoDurationChanged paramaters:@[@(currentDuration), @(totalDuration)]];
 }
 
@@ -205,6 +206,9 @@ UIGestureRecognizerDelegate
     self.avPlayer.delegate = self;
     [self.videoContainView.layer addSublayer:self.avPlayer.playerLayer];
     self.avPlayer.playerLayer.frame = self.videoContainView.bounds;
+    if (self.resource.resumeDuration && self.resource.supportResume) {
+        [self.avPlayer seekToSecond:self.resource.resumeDuration];
+    }
 }
 
 #pragma mark - Lazy Load

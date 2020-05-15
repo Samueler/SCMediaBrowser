@@ -37,7 +37,7 @@ UICollectionViewDelegate
         [self.resources addObject:resource];
     }
     
-    SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"] loopCount:2];
+    SCMBVideoResource *videoResource = [[SCMBVideoResource alloc] initWithURL:[NSURL URLWithString:@"https://mvvideo5.meitudata.com/56ea0e90d6cb2653.mp4"] loopCount:2 supportResume:YES resumeDuration:10];
     videoResource.attachment.originSize = CGSizeMake(854, 480);
     [self.resources addObject:videoResource];
     
