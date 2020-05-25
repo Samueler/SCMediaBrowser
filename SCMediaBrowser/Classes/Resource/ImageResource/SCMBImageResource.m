@@ -23,6 +23,9 @@ NSString *const kSCMBResourcePropertyStringForDownloadProgress = @"downloadProgr
 - (instancetype)initWithImage:(UIImage *)image {
     if (self = [super init]) {
         self->_image = image;
+        if (!_placeholder) {
+            self->_placeholder = [UIImage bundleImageNamed:@"placeholder"];
+        }
     }
     return self;
 }
