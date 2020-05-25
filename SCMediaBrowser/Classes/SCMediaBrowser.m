@@ -95,6 +95,11 @@ NSString *const kSCMBPropertyStringForCurrentResource = @"currentResource";
         }
     }
     
+    if (self.currentIndex >= self.internalResources.count) {
+        NSAssert(self.currentIndex < self.internalResources.count, @"index out of bounds");
+        return;
+    }
+    
     self->_currentResource = self.internalResources[self.currentIndex];
     self.collectionView.resources = self.internalResources;
     
